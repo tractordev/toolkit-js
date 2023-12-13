@@ -56,7 +56,6 @@ export class CBORDecoder {
 
   async decode(len: number): Promise<any> {
     const buf = new Uint8Array(len);
-    const bufn = await this.r.read(buf);
     let bufread = 0;
     while (bufread < len) {
       const n = await this.r.read(buf.subarray(bufread));
