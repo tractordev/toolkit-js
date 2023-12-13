@@ -1,52 +1,24 @@
 
-var frames: {[index: string]: Conn} = {};
-
-function frameElementID(w: Window) {
-  return (w.frameElement) ? w.frameElement.id : "";
-}
-
-if (globalThis.window) {
-  window.addEventListener("message", (event) => {
-    if (!event.source) return;
-    // @ts-ignore
-    const frameID = frameElementID(event.source);
-    if (!frames[frameID]) {
-        const event = new CustomEvent("connection", { detail: frameID });
-        if (!window.dispatchEvent(event)) {
-          return;
-        }
-        if (!frames[frameID]) {
-          console.warn("incoming message with no connection for frame ID in window:", frameID, window.location);
-          return;
-        }
-    }
-    const conn = frames[frameID];
-    const chunk = new Uint8Array(event.data);
-    conn.chunks.push(chunk);
-    if (conn.waiters.length > 0) {
-      const waiter = conn.waiters.shift();
-      if (waiter) waiter();
-    }
-  });
-}
-
 export class Conn {
+  worker: Worker|globalThis;
   waiters: Array<() => void>
   chunks: Array<Uint8Array>;
   isClosed: boolean
-  frame: Window;
 
-  constructor(frame?: HTMLIFrameElement|null) {
+  constructor(worker: Worker|globalThis) {
     this.isClosed = false;
     this.waiters = [];
     this.chunks = [];
-    if (frame && frame.contentWindow) {
-      this.frame = frame.contentWindow;
-      frames[frame.id] = this;
-    } else {
-      this.frame = window.parent;
-      frames[frameElementID(window.parent)] = this;
-    }
+    this.worker = worker;
+    this.worker.onmessage = (event) => {
+      if (!event.data.duplex) return;
+      const chunk = new Uint8Array(event.data.duplex);
+      this.chunks.push(chunk);
+      if (this.waiters.length > 0) {
+        const waiter = this.waiters.shift();
+        if (waiter) waiter();
+      }
+    };
   }
 
   read(p: Uint8Array): Promise<number | null> {
@@ -83,7 +55,7 @@ export class Conn {
   }
 
   write(p: Uint8Array): Promise<number> {
-    this.frame.postMessage(p.buffer, "*");
+    this.worker.postMessage({duplex: p.buffer});
     return Promise.resolve(p.byteLength);
   }
 

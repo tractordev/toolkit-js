@@ -1,4 +1,3 @@
-// @ts-ignore
 export * from "./index.ts";
-// @ts-ignore
-export {Conn as IFrameConn} from "./transport/iframe.ts";
+export {Conn as FrameConn} from "./transport/iframe.ts";
+export {Conn as WorkerConn} from "./transport/worker.ts";

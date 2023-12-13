@@ -1,11 +1,7 @@
-// @ts-ignore
 export * from "./codec/mod.ts";
-// @ts-ignore
 export * from "./rpc/mod.ts";
-// @ts-ignore
 export * from "./peer/mod.ts";
-// @ts-ignore
 export * from "./mux/mod.ts";
-// @ts-ignore
+export * from "./fn/mod.ts";
 export * from "./buffer.ts";
-
+export * from "./io.ts";
