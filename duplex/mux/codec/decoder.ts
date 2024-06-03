@@ -44,7 +44,7 @@ async function readPacket(r: io.Reader): Promise<Uint8Array | null> {
   const rest = new Uint8Array(size);
   const restn = await r.read(rest);
   if (restn === null) {
-    return Promise.reject("unexpected EOF");
+    return Promise.reject("unexpected EOF reading packet");
   }
 
   if (msgID === codec.DataID) {
@@ -56,7 +56,7 @@ async function readPacket(r: io.Reader): Promise<Uint8Array | null> {
       const chunk = new Uint8Array(datasize-dataread);
       const chunkread = await r.read(chunk);
       if (chunkread === null) {
-        return Promise.reject("unexpected EOF");
+        return Promise.reject(`unexpected EOF reading data chunk`);
       }
       dataread += chunkread;
       chunks.push(chunk.slice(0, chunkread));

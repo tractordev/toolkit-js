@@ -1,3 +1,4 @@
+.PHONY: npm
 
 build: dist/duplex.js  dist/duplex.min.js
 
