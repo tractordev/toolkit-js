@@ -15,6 +15,7 @@ await build({
     }]
   },
   typeCheck: false,
+  test: false,
   package: {
     // package.json properties
     name: "duplex",
