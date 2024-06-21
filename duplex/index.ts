@@ -5,3 +5,4 @@ export * from "./mux/mod.ts";
 export * from "./fn/mod.ts";
 export * from "./buffer.ts";
 export * from "./io.ts";
+export {Conn as PortConn} from "./transport/messageport.ts";

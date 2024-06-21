@@ -1,16 +1,16 @@
 
 export class Conn {
-    port: MessagePort
+    port: any
     waiters: Array<() => void>
     chunks: Array<Uint8Array>;
     isClosed: boolean
   
-    constructor(port: MessagePort) {
+    constructor(port: any) {
       this.isClosed = false;
       this.waiters = [];
       this.chunks = [];
       this.port = port;
-      this.port.onmessage = (event) => {
+      this.port.onmessage = (event: any) => {
         const chunk = new Uint8Array(event.data);
         this.chunks.push(chunk);
         if (this.waiters.length > 0) {
@@ -54,7 +54,7 @@ export class Conn {
     }
   
     write(p: Uint8Array): Promise<number> {
-      this.port.postMessage(p, [p]);
+      this.port.postMessage(p, [p.buffer]);
       return Promise.resolve(p.byteLength);
     }
   

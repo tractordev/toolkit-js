@@ -1,16 +1,16 @@
 
 export class Conn {
-  worker: Worker|globalThis;
+  worker: any;
   waiters: Array<() => void>
   chunks: Array<Uint8Array>;
   isClosed: boolean
 
-  constructor(worker: Worker|globalThis) {
+  constructor(worker: any) {
     this.isClosed = false;
     this.waiters = [];
     this.chunks = [];
     this.worker = worker;
-    this.worker.onmessage = (event) => {
+    this.worker.onmessage = (event: any) => {
       if (!event.data.duplex) return;
       const chunk = new Uint8Array(event.data.duplex);
       this.chunks.push(chunk);
