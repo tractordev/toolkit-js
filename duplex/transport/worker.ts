@@ -36,7 +36,7 @@ export class Conn {
         while (written < p.length) {
           const chunk = this.chunks.shift();
           if (chunk === null || chunk === undefined) {
-            resolve(null);
+            resolve(written);
             return;
           }
           const buf = chunk.slice(0, p.length-written);
