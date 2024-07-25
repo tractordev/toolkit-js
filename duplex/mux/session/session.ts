@@ -81,7 +81,8 @@ export class Session {
                     if (this.closed) {
                         return;
                     }
-                    throw `invalid channel (${cmsg.channelID}) on op ${cmsg.ID}`;
+                    console.warn(`invalid channel (${cmsg.channelID}) on op ${cmsg.ID}`);
+                    continue;
                 }
                 await ch.handle(cmsg);
             }
