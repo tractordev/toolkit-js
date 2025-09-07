@@ -3,6 +3,14 @@ import * as io from "../io.ts";
 // @ts-ignore
 import * as codec from "./mod.ts";
 
+(function() {
+  if (typeof global !== 'undefined' && !global.TextEncoder) {
+    const { TextEncoder, TextDecoder } = require('util');
+    global.TextEncoder = TextEncoder;
+    global.TextDecoder = TextDecoder;
+  }
+})();
+
 export class JSONCodec {
   debug: boolean;
 

@@ -6,13 +6,10 @@ await build({
   entryPoints: ["./index.ts"],
   outDir: "./npm",
   shims: {
-    // see JS docs for overview and more options
-    deno: true,
     webSocket: true,
-    custom: [{
-      globalNames: ["TextEncoder", "TextDecoder", "MessagePort"],
-      module: "util",
-    }]
+  },
+  compilerOptions: {
+    lib: ["ES2021", "DOM"],  // Include DOM types for TextEncoder
   },
   typeCheck: false,
   test: false,
