@@ -3,7 +3,7 @@ build: dist/duplex.js  dist/duplex.min.js
 .PHONY: build
 
 npm:
-	deno run -A scripts/build_npm.ts 0.2.0
+	deno run -A scripts/build_npm.ts 0.2.1
 .PHONY: npm
 
 publish: npm
