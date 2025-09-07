@@ -3,10 +3,10 @@ import * as rpc from "./mod.ts";
 // @ts-ignore
 import * as codec_ from "../codec/mod.ts";
 // @ts-ignore
-import * as mux from "../mux/mod.ts";
+import * as api from "../api.ts";
 
 
-export async function Respond(ch: mux.Channel, codec: codec_.Codec, handler?: rpc.Handler): Promise<void> {
+export async function Respond(ch: api.Channel, codec: codec_.Codec, handler?: rpc.Handler): Promise<void> {
   const framer = new codec_.FrameCodec(codec);
   const dec = framer.decoder(ch);
   const callHeader = await dec.decode();
@@ -33,11 +33,11 @@ export async function Respond(ch: mux.Channel, codec: codec_.Codec, handler?: rp
 
 class responder implements rpc.Responder {
   header: rpc.ResponseHeader;
-  ch: mux.Channel;
+  ch: api.Channel;
   codec: codec_.FrameCodec;
   responded: boolean;
   
-  constructor(ch: mux.Channel, codec: codec_.FrameCodec, header: rpc.ResponseHeader) {
+  constructor(ch: api.Channel, codec: codec_.FrameCodec, header: rpc.ResponseHeader) {
     this.ch = ch;
     this.codec = codec;
     this.header = header;
@@ -52,7 +52,7 @@ class responder implements rpc.Responder {
     return this.respond(v, false);
   }
 
-  async continue(v: any): Promise<mux.Channel> {
+  async continue(v: any): Promise<api.Channel> {
     await this.respond(v, true);
     return this.ch;
   }

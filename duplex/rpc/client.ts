@@ -3,14 +3,14 @@ import * as rpc from "./mod.ts";
 // @ts-ignore
 import * as codec from "../codec/mod.ts";
 // @ts-ignore
-import * as mux from "../mux/mod.ts";
+import * as api from "../api.ts";
 
 
 export class Client implements rpc.Caller {
-  session: mux.Session;
+  session: api.Session;
   codec: codec.Codec;
 
-  constructor(session: mux.Session, codec: codec.Codec) {
+  constructor(session: api.Session, codec: codec.Codec) {
     this.session = session;
     this.codec = codec;    
   }
@@ -45,7 +45,6 @@ export class Client implements rpc.Caller {
       return resp;
     } catch (e) {
       await ch.close();
-      console.error(e, selector, args);
       return Promise.reject(e);
       
     }

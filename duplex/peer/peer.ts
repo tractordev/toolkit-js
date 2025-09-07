@@ -1,17 +1,19 @@
 // @ts-ignore
 import * as rpc from "../rpc/mod.ts";
 // @ts-ignore
+import * as fn from "../fn/mod.ts";
+// @ts-ignore
 import * as codec from "../codec/mod.ts";
 // @ts-ignore
-import * as mux from "../mux/mod.ts";
+import * as api from "../api.ts";
 
 export class Peer implements rpc.Caller, rpc.Handler {
-  session: mux.Session;
+  session: api.Session;
   caller: rpc.Caller;
   codec: codec.Codec;
   responder: rpc.RespondMux;
 
-  constructor(session: mux.Session, codec: codec.Codec) {
+  constructor(session: api.Session, codec: codec.Codec) {
     this.session = session;
     this.codec = codec;
     this.caller = new rpc.Client(session, codec);
@@ -44,6 +46,11 @@ export class Peer implements rpc.Caller, rpc.Handler {
     this.responder.respondRPC(r, c);
   }
 
+  proxy(): any {
+    return fn.methodProxy(this.caller);
+  }
+
+  // deprecated
   virtualize(): any {
     return rpc.VirtualCaller(this.caller);
   }

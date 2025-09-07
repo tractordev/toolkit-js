@@ -6,7 +6,7 @@ export * from "./handler.ts";
 export * from "./responder.ts";
 
 // @ts-ignore
-import * as mux from "../mux/mod.ts";
+import * as api from "../api.ts";
 // @ts-ignore
 import * as codec from "../codec/mod.ts";
 
@@ -18,16 +18,16 @@ export interface Responder {
   header: ResponseHeader;
   send(v: any): Promise<void>;
   return(v: any): Promise<void>;
-  continue(v: any): Promise<mux.Channel>;
+  continue(v: any): Promise<api.Channel>;
 }
 
 export class Call {
   selector: string;
-  channel: mux.Channel;
+  channel: api.Channel;
   caller: Caller|undefined;
   decoder: codec.Decoder;
 
-  constructor(selector: string, channel: mux.Channel, decoder: codec.Decoder) {
+  constructor(selector: string, channel: api.Channel, decoder: codec.Decoder) {
     this.selector = selector;
     this.channel = channel;
     this.decoder = decoder;
@@ -53,10 +53,10 @@ export class Response {
   error: string|undefined;
   continue: boolean;
   value: any;
-  channel: mux.Channel;
+  channel: api.Channel;
   codec: codec.Codec;
 
-  constructor(channel: mux.Channel, codec: codec.Codec) {
+  constructor(channel: api.Channel, codec: codec.Codec) {
     this.channel = channel;
     this.codec = codec;
     this.error = undefined;
