@@ -18,7 +18,7 @@ await build({
   test: false,
   package: {
     // package.json properties
-    name: "duplex",
+    name: "@progrium/duplex",
     version: Deno.args[0],
     description: "",
     license: "MIT",
