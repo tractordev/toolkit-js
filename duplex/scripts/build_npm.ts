@@ -10,7 +10,7 @@ await build({
     deno: true,
     webSocket: true,
     custom: [{
-      globalNames: ["TextEncoder", "TextDecoder"],
+      globalNames: ["TextEncoder", "TextDecoder", "MessagePort"],
       module: "util",
     }]
   },
