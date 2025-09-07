@@ -38,7 +38,7 @@ export class Channel {
     this.readBuf = new util.ReadBuffer();
   }
 
-  ident(): number {
+  get id(): number {
     return this.localId;
   }
 
