@@ -1,9 +1,10 @@
+VERSION := 0.2.2
 
 build: dist/duplex.js  dist/duplex.min.js
 .PHONY: build
 
 npm:
-	deno run -A scripts/build_npm.ts 0.2.1
+	deno run -A scripts/build_npm.ts $(VERSION)
 .PHONY: npm
 
 publish: npm
